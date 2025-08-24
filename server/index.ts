@@ -73,7 +73,9 @@ app.use((req, res, next) => {
   }
 
   const port = parseInt(process.env.PORT || "5000", 10);
-  server.listen(port, () => {
+
+  // ✅ FIX: bind to 0.0.0.0 so Railway can expose it
+  server.listen(port, "0.0.0.0", () => {
     log(`✅ serving on port ${port}`);
   });
 })();
