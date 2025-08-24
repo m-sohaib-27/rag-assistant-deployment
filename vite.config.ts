@@ -3,12 +3,12 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
-  root: path.resolve('E:/rag-assistant-deployment', 'client'),
+  root: path.resolve(__dirname, 'client'), // 👈 relative path
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve('E:/rag-assistant-deployment', './client/src'),
-      '@assets': path.resolve('E:/rag-assistant-deployment', './attached_assets'),
+      '@': path.resolve(__dirname, 'client/src'),
+      '@assets': path.resolve(__dirname, 'attached_assets'),
     },
   },
   server: {
@@ -22,7 +22,8 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist',
+    outDir: path.resolve(__dirname, 'dist/client'), // build into dist/client
     sourcemap: true,
+    emptyOutDir: true,
   },
 });
