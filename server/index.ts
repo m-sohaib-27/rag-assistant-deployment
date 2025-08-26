@@ -5,7 +5,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { fileURLToPath } from "url";
-import { dirname } from "path";
+import { dirname, resolve } from "path";
 
 // ES Module friendly __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -73,6 +73,8 @@ app.use((req, res, next) => {
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
+    // Correcting the static file serving for production
+    app.use(express.static(resolve(__dirname, 'client')));
     serveStatic(app);
   }
 
