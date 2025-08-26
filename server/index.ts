@@ -4,18 +4,24 @@ dotenv.config();
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// 🔹 ES Module compatible __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 
 // 🔹 Increase timeout for all requests (AI ops)
-app.use((req: Request, res: Response, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   req.setTimeout(300000); // 5 min
   res.setTimeout(300000);
   next();
 });
 
 // 🔹 Longer timeout for /api/queries
-app.use("/api/queries", (req: Request, res: Response, next) => {
+app.use("/api/queries", (req: Request, res: Response, next: NextFunction) => {
   req.setTimeout(600000); // 10 min
   res.setTimeout(600000);
   next();
