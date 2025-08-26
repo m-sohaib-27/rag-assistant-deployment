@@ -6,8 +6,9 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import path from "path";
 
-// 🔹 ES Module compatible __dirname
+// Recreate __dirname and __filename for ES modules in TypeScript
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
