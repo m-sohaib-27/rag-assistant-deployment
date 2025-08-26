@@ -73,8 +73,9 @@ app.use((req, res, next) => {
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
-    // Correcting the static file serving for production
-    app.use(express.static(resolve(__dirname, 'client')));
+    // We'll define the production path here and pass it to serveStatic
+    const productionPath = resolve(__dirname, 'client');
+    app.use(express.static(productionPath));
     serveStatic(app);
   }
 
