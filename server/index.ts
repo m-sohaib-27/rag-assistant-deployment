@@ -4,12 +4,8 @@ dotenv.config();
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-import { fileURLToPath } from "url";
-import { dirname, resolve } from "path";
-
-// ES Module friendly __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { resolve } from "path";
+import process from "process";
 
 const app = express();
 
@@ -73,8 +69,8 @@ app.use((req, res, next) => {
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
-    // We'll define the production path here and pass it to serveStatic
-    const productionPath = resolve(__dirname, 'client');
+    // This is the key fix: use process.cwd() to get the path reliably.
+    const productionPath = resolve(process.cwd(), "client");
     app.use(express.static(productionPath));
     serveStatic(app);
   }
