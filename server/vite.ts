@@ -68,7 +68,18 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
+  // Correctly resolve the path to the client's build directory.
+  // We go up one level from the server's compiled 'dist' folder,
+  // then into the 'client' folder and then the 'dist' folder.
+  const distPath = path.resolve(
+    import.meta.dirname,
+    "..",
+    "client",
+    "dist"
+  );
+  
+  // Log the path to verify it in your deployment logs.
+  log(`Serving static files from: ${distPath}`, "vite");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
@@ -81,5 +92,5 @@ export function serveStatic(app: Express) {
   // fall through to index.html if the file doesn't exist
   app.use("*", (_req, res) => {
     res.sendFile(path.resolve(distPath, "index.html"));
-  });
+  });
 }
