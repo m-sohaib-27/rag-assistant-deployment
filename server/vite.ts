@@ -68,12 +68,11 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  // Correctly resolve the path to the client's build directory.
-  // We go up one level from the server's compiled 'dist' folder,
-  // then into the 'client' folder and then the 'dist' folder.
+  // Correctly resolve the path to the client's build directory using `process.cwd()`.
+  // This is a more robust way to get the current working directory in Node.js,
+  // which works reliably in many environments where `import.meta.dirname` might fail.
   const distPath = path.resolve(
-    import.meta.dirname,
-    "..",
+    process.cwd(),
     "client",
     "dist"
   );
